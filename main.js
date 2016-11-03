@@ -17,6 +17,22 @@ var app = express();
 // automatische json-body parsers van request MET media-type application/json gespecifieerd in de request.
 app.use(parser.json());
 
+// opvangen van een GET
+app.get("/locaties", function (request, response) {
+  //stuurt als antwoord de inhoud van onze database. Standaard in json terug gestuurd.
+  response.send(dal.AllLocaties());
+});
+
+// opvangen van een GET op locaties/{locatie_naam}
+app.get("/locaties/:id", function (request, response) {
+  var locatie = dal.findLocatie(request.params.id);
+  if(locatie) {
+    response.send(locatie);
+  }else {
+    response.status(404).send();
+  }
+});
+
 // de server starten op poort 4567 (bereikbaar op http://localhost:4567 )
 app.listen(4567);
 // lijntje voor te zien dat alles is opgestart.
