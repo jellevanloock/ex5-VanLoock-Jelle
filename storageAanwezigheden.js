@@ -1,7 +1,7 @@
 module.exports =  {
   aanwezigheden : {},
-  
-  saveLocatie: function(locatie){
+
+  saveAanwezighedenPerLocatie: function(locatie){
     this.aanwezigheden[locatie.id]= locatie;
   },
   AllAanwezigheden : function(){
@@ -11,7 +11,8 @@ module.exports =  {
     };
     return rtnValue;
   },
-  findLocatie : function(id){
-    return this.aanwezigheden[id];
+  
+  findAanwezighedenPerLocatie : function(naam){
+    return this.aanwezigheden[naam];
   }
 };

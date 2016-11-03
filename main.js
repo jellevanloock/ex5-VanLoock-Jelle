@@ -23,12 +23,6 @@ app.get("/locaties", function (request, response) {
   response.send(dal.AllLocaties());
 });
 
-// opvangen van een GET op /aanwezigheden
-app.get("/aanwezigheden", function (request, response) {
-  //stuurt als antwoord de inhoud van onze database. Standaard in json terug gestuurd.
-  response.send(dal2.AllAanwezigheden());
-});
-
 // opvangen van een GET op /locaties/{locatie_naam}
 app.get("/locaties/:id", function (request, response) {
   var locatie = dal.findLocatie(request.params.id);
@@ -65,6 +59,23 @@ app.post("/locaties", function(request, response){
   dal.saveLocatie(locatie);
 // de default httpstatus (200) overschrijven met 204 en geen antwoord specifiëren.
   response.status(201).location("../locaties/"+locatie.id).send();
+});
+
+
+// opvangen van een GET op /aanwezigheden
+app.get("/aanwezigheden", function (request, response) {
+  //stuurt als antwoord de inhoud van onze database. Standaard in json terug gestuurd.
+  response.send(dal2.AllAanwezigheden());
+});
+
+// opvangen van een GET op /aanwezigheden/{locatie_naam}
+app.get("/aanwezigheden/:id", function (request, response) {
+  var locatie = dal2.findAanwezighedenPerLocatie(request.params.id);
+  if(locatie) {
+    response.send(locatie);
+  }else {
+    response.status(404).send();
+  }
 });
 
 // de server starten op poort 4567 (bereikbaar op http://localhost:4567 )
