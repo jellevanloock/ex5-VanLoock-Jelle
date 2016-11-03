@@ -7,8 +7,8 @@ var parser = require('body-parser'); // extensie op express voor eenvoudig body 
 
 // Toevoegen van de code van de dal vervangt onze
 // onze lokale 'datastore'. deze variable bewaart onze state. 
-var dal = require("./storage.js");
-
+var dal = require("./storageLocaties.js");
+var dal2 = require("./storageAanwezigheden.js");
 //validatie inladen
 var validation = require("./validate.js");
 
@@ -21,6 +21,12 @@ app.use(parser.json());
 app.get("/locaties", function (request, response) {
   //stuurt als antwoord de inhoud van onze database. Standaard in json terug gestuurd.
   response.send(dal.AllLocaties());
+});
+
+// opvangen van een GET op /aanwezigheden
+app.get("/aanwezigheden", function (request, response) {
+  //stuurt als antwoord de inhoud van onze database. Standaard in json terug gestuurd.
+  response.send(dal2.AllAanwezigheden());
 });
 
 // opvangen van een GET op /locaties/{locatie_naam}
