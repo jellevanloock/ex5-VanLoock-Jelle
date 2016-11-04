@@ -4,6 +4,7 @@
 
 var express = require('express'); // eenvoudige webserver in node js
 var parser = require('body-parser'); // extensie op express voor eenvoudig body uit te lezen
+var uuid = require('uuid');
 
 // Toevoegen van de code van de dal vervangt onze
 // onze lokale 'datastore'. deze variable bewaart onze state. 
@@ -92,7 +93,7 @@ app.post("/aanwezigheden", function(request, response){
   }
   
   // een id geven aan ons nieuwe locatie.
-  personen.id = personen.drone_naam
+  personen.id = uuid.v4();
   // de locatie toevoege in onze 'dal'.
   dal2.saveAanwezighedenPerLocatie(personen);
 // de default httpstatus (200) overschrijven met 204 en geen antwoord specifiëren.
