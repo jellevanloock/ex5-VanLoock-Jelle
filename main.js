@@ -78,6 +78,27 @@ app.get("/aanwezigheden/:id", function (request, response) {
   }
 });
 
+// opvangen van een POST op /locaties. 
+app.post("/aanwezigheden", function(request, response){
+  // de data in de body wordt toegekend aan onze locatie variabele. 
+  // deze is enkel opgevuld indien het JSON is.
+  var personen = request.body;
+  
+    // Valideren dat velden bestaan
+  var errors = validation.fieldsNotEmpty(personen, "drone_naam","aantal", "locatie_naam", "uur");
+  if (errors){
+    response.status(400).send({msg:"Following field(s) are mandatory:"+errors.concat()});
+    return;
+  }
+  
+  // een id geven aan ons nieuwe locatie.
+  personen.id = personen.drone_naam
+  // de locatie toevoege in onze 'dal'.
+  dal2.saveAanwezighedenPerLocatie(personen);
+// de default httpstatus (200) overschrijven met 204 en geen antwoord specifiëren.
+  response.status(201).location("../aanwezigheden/"+personen.id).send();
+});
+
 // de server starten op poort 4567 (bereikbaar op http://localhost:4567 )
 app.listen(4567);
 // lijntje voor te zien dat alles is opgestart.
