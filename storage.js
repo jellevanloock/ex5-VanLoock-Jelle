@@ -1,4 +1,20 @@
 module.exports = {
+    bewegingen: {},
+
+    saveBewegingen: function(bewegingen) {
+        this.bewegingen[bewegingen.id] = bewegingen;
+    },
+    AllBewegingen: function() {
+        var rtnValue = [];
+        for (var item in this.bewegingen) {
+            rtnValue.push(this.bewegingen[item]);
+        };
+        return rtnValue;
+    },
+
+    findBeweging: function(naam) {
+        return this.aanwezigheden[naam];
+    },
     aanwezigheden: {},
 
     saveAanwezighedenPerLocatie: function(locatie) {
