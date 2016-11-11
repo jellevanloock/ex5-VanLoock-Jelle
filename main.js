@@ -10,6 +10,7 @@ var uuid = require('uuid');
 var dal = require("./storage.js");
 //validatie inladen
 var validation = require("./validate.js");
+var validationlocaties = require("./validatelocaties.js")
 
 // aanmaken van de webserver variabele
 var app = express();
@@ -39,10 +40,10 @@ app.post("/locaties", function(request, response) {
     var locatie = request.body;
 
     // Valideren dat velden bestaan
-    var errors = validation.fieldsNotEmpty(locatie, "naam_drone", "mac_address_drone", "naam_locatie", "beschrijving");
+    var errors = validationlocaties.fieldsNotEmpty(locatie, "naam_drone", "mac_address_drone", "naam_locatie", "beschrijving");
     if (errors) {
         response.status(400).send({
-            msg: "Following field(s) are mandatory:" + errors.concat()
+            msg: "Volgende velden zijn verplicht of fout: " + errors.concat()
         });
         return;
     }
@@ -89,7 +90,7 @@ app.post("/aanwezigheden", function(request, response) {
     var personen = request.body;
 
     // Valideren dat velden bestaan
-    var errors = validation.fieldsNotEmpty(personen, "drone_naam", "aantal", "locatie_naam", "uur");
+    var errors = validation.fieldsNotEmpty(personen, "naam_drone", "aantal", "naam_locatie", "uur");
     if (errors) {
         response.status(400).send({
             msg: "Following field(s) are mandatory:" + errors.concat()
