@@ -10,7 +10,9 @@ var uuid = require('uuid');
 var dal = require("./storage.js");
 //validatie inladen
 var validation = require("./validate.js");
-var validationlocaties = require("./validatelocaties.js")
+var validationlocaties = require("./validatelocaties.js");
+var validationaanwezigheden = require("./validateaanwezigheden.js");
+var validationbewegingen = require("./validatebewegingen.js");
 
 // aanmaken van de webserver variabele
 var app = express();
@@ -52,7 +54,7 @@ app.post("/locaties", function(request, response) {
     var existingLocatie = dal.findLocatie(locatie.naam_drone);
     if (existingLocatie) {
         response.status(409).send({
-            msg: "Naam_drone must be unique, it's already registered",
+            msg: "Naam_drone moet uniek zijn!",
             link: "../locaties/" + existingLocatie.id
         });
         return;
@@ -90,10 +92,10 @@ app.post("/aanwezigheden", function(request, response) {
     var personen = request.body;
 
     // Valideren dat velden bestaan
-    var errors = validation.fieldsNotEmpty(personen, "naam_drone", "aantal", "naam_locatie", "uur");
+    var errors = validationaanwezigheden.fieldsNotEmpty(personen, "naam_drone", "aantal", "naam_locatie", "uur");
     if (errors) {
         response.status(400).send({
-            msg: "Following field(s) are mandatory:" + errors.concat()
+            msg: "Volgende velden zijn verplicht of fout: " + errors.concat()
         });
         return;
     }
@@ -130,10 +132,10 @@ app.post("/bewegingen", function(request, response) {
     var bewegingen = request.body;
 
     // Valideren dat velden bestaan
-    var errors = validation.fieldsNotEmpty(bewegingen, "beginlocatie", "eindlocatie", "duur", "weer", "beweging");
+    var errors = validationbewegingen.fieldsNotEmpty(bewegingen, "beginlocatie", "eindlocatie", "duur", "weer", "beweging");
     if (errors) {
         response.status(400).send({
-            msg: "Following field(s) are mandatory:" + errors.concat()
+            msg: "Volgende velden zijn verplicht of fout: " + errors.concat()
         });
         return;
     }
