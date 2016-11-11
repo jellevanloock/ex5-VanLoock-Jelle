@@ -22,7 +22,7 @@ app.get("/locaties", function(request, response) {
     response.send(dal.AllLocaties());
 });
 
-// opvangen van een GET op /locaties/[locatie_naam]
+// opvangen van een GET op /locaties/[drone_naam]
 app.get("/locaties/:id", function(request, response) {
     var locatie = dal.findLocatie(request.params.id);
     if (locatie) {
@@ -39,7 +39,7 @@ app.post("/locaties", function(request, response) {
     var locatie = request.body;
 
     // Valideren dat velden bestaan
-    var errors = validation.fieldsNotEmpty(locatie, "naam", "mac_address_drone", "beschrijving");
+    var errors = validation.fieldsNotEmpty(locatie, "naam_drone", "mac_address_drone", "naam_locatie", "beschrijving");
     if (errors) {
         response.status(400).send({
             msg: "Following field(s) are mandatory:" + errors.concat()
@@ -48,17 +48,17 @@ app.post("/locaties", function(request, response) {
     }
 
     // Valideren dat we niet dezelfde locatie 2x hebben
-    var existingLocatie = dal.findLocatie(locatie.naam);
+    var existingLocatie = dal.findLocatie(locatie.naam_drone);
     if (existingLocatie) {
         response.status(409).send({
-            msg: "Locatienaam must be unique, it's already registered",
+            msg: "Naam_drone must be unique, it's already registered",
             link: "../locaties/" + existingLocatie.id
         });
         return;
     }
 
     // De naam van de locatie wordt toegekend als ID
-    locatie.id = locatie.naam;
+    locatie.id = locatie.naam_drone;
     // de locatie toevoegen in onze de lokale opslag 'dal'.
     dal.saveLocatie(locatie);
     // de default httpstatus (200) overschrijven met 204 en geen antwoord specifiÃ«ren.
@@ -113,7 +113,7 @@ app.get("/bewegingen", function(request, response) {
 });
 
 // opvangen van een GET op /bewegingen/[UUID]
-app.get("/aanwezigheden/:id", function(request, response) {
+app.get("/bewegingen/:id", function(request, response) {
     var beweging = dal.findBeweging(request.params.id);
     if (beweging) {
         response.send(beweging);
