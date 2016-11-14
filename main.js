@@ -1,14 +1,21 @@
-//Samen gewerkt met Jelle Van Loock en Kevin Aerts
+//Samen gewerkt met Kevin Aerts, Galvani Makau Futa, Jonnick Makau Futa en Genzo Vandervelden
+
+/* We merken momenteel nog 3 problemen op: 
+ * 1. ID toewijzen per groep, deze mag niet overschreven worden. (aanwezigheden)
+ * 2. Je kan niet verplichte velden zomaar toevoegen!
+ * 3. In een object (bewegingen) de verplichte velden meegeven.
+ */
 
 // inladen van de dependencies
 var express = require('express'); // eenvoudige webserver in node js
 var parser = require('body-parser'); // extensie op express voor eenvoudig body uit te lezen
-var uuid = require('uuid');
+var uuid = require('uuid'); //gebruikt voor uniek id toe te kennen, oorspronkelijk de bedoeling
+// om een id toe te kennen voor een bepaalde drone D1 = id 1 bijvoorbeeld
 
-// Toevoegen van de code van de dal vervangt onze
+// Toevoegen van de code van de dal vervangt
 // onze lokale 'datastore'. deze variable bewaart onze state.
 var dal = require("./storage.js");
-//validatie inladen
+//validaties inladen
 var validation = require("./validate.js");
 var validationlocaties = require("./validatelocaties.js");
 var validationaanwezigheden = require("./validateaanwezigheden.js");
@@ -64,7 +71,7 @@ app.post("/locaties", function(request, response) {
     locatie.id = locatie.naam_drone;
     // de locatie toevoegen in onze de lokale opslag 'dal'.
     dal.saveLocatie(locatie);
-    // de default httpstatus (200) overschrijven met 204 en geen antwoord specifiÃ«ren.
+    // de default httpstatus (200) overschrijven met 204 en geen antwoord specifiëren.
     response.status(201).location("../locaties/" + locatie.id).send();
 });
 
@@ -104,7 +111,7 @@ app.post("/aanwezigheden", function(request, response) {
     personen.id = uuid.v4();
     // de 'persoon' toevoegen in onze 'dal'.
     dal.saveAanwezighedenPerLocatie(personen);
-    // de default httpstatus (200) overschrijven met 204 en geen antwoord specifiÃ«ren.
+    // de default httpstatus (200) overschrijven met 204 en geen antwoord specifiëren.
     response.status(201).location("../aanwezigheden/" + personen.id).send();
 });
 
